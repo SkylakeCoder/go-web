@@ -17,7 +17,7 @@ func Test_ViewParams(test *testing.T) {
 	}
 	keys := vp.GetKeys()
 	for _, k := range keys {
-		v, _ := vp.Get(k)
+		v, _ := vp.GetAsString(k)
 		log.Println("key=", k, ", value=", v)
 	}
 }

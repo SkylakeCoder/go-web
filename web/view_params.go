@@ -2,6 +2,7 @@ package web
 
 import (
 	"errors"
+	"fmt"
 )
 
 type ViewParams map[string]interface{}
@@ -59,4 +60,23 @@ func (vp *ViewParams) Get(k string) (interface{}, error) {
 	} else {
 		return v, errors.New("can't find key:" + k)
 	}
+}
+
+func (vp *ViewParams) GetAsString(k string) (string, error) {
+	v, err := vp.Get(k)
+	if err != nil {
+		return "", err
+	}
+	switch v.(type) {
+	case string:
+		s, _ := v.(string)
+		return s, nil
+	case int:
+		i, _ := v.(int)
+		return fmt.Sprintf("%d", i), nil
+	case float64:
+		f, _ := v.(float64)
+		return fmt.Sprintf("%f", f), nil
+	}
+	return "", errors.New("unkown walue type.")
 }
