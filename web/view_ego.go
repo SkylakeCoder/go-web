@@ -16,8 +16,8 @@ func NewViewEGO() *viewEGO {
 	}
 }
 
-func (ve *viewEGO) Render(egoTemplatePath string, viewParams *ViewParams) (string, error) {
-	bytes, err := ioutil.ReadFile(egoTemplatePath)
+func (ve *viewEGO) Render(templateRelativePath string, viewParams *ViewParams) (string, error) {
+	bytes, err := ioutil.ReadFile(templateRelativePath)
 	if err != nil {
 		return "", err
 	}

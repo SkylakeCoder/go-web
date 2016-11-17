@@ -8,5 +8,5 @@ const (
 )
 
 type ViewEngine interface {
-	Render(templatePath string, params *ViewParams) (string, error)
+	Render(templateRelativePath string, params *ViewParams) (string, error)
 }
