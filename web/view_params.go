@@ -7,14 +7,14 @@ import (
 
 type ViewParams map[string]interface{}
 
-func NewViewParams(params ... interface{}) (*ViewParams, error) {
-	if len(params) % 2 != 0 {
+func NewViewParams(params ...interface{}) (*ViewParams, error) {
+	if len(params)%2 != 0 {
 		return nil, errors.New("invalid view params.")
 	}
 	vp := &ViewParams{}
 	for i := 0; i < len(params); i += 2 {
 		k := params[i]
-		v := params[i + 1]
+		v := params[i+1]
 		strKey, ok := k.(string)
 		if !ok {
 			return nil, errors.New("key must be string!")
@@ -27,7 +27,7 @@ func NewViewParams(params ... interface{}) (*ViewParams, error) {
 		case float64:
 			vp.PutFloat(strKey, v.(float64))
 		default:
-			return nil, errors.New("unkown walue type.")
+			return nil, errors.New("unknown walue type.")
 		}
 	}
 	return vp, nil
@@ -78,5 +78,5 @@ func (vp *ViewParams) GetAsString(k string) (string, error) {
 		f, _ := v.(float64)
 		return fmt.Sprintf("%f", f), nil
 	}
-	return "", errors.New("unkown walue type.")
+	return "", errors.New("unknown walue type.")
 }

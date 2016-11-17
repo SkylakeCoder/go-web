@@ -1,8 +1,8 @@
 package web
 
 import (
-	"testing"
 	"log"
+	"testing"
 )
 
 func Test_ViewEGO(test *testing.T) {

@@ -24,7 +24,7 @@ func (ve *viewEGO) Render(egoTemplatePath string, viewParams *ViewParams) (strin
 	strTemplate := string(bytes)
 	labels := ve.labelReg.FindAllString(strTemplate, -1)
 	for _, v := range labels {
-		label := v[3:len(v)-2]
+		label := v[3 : len(v)-2]
 		label = strings.TrimSpace(label)
 		targetValue, err := viewParams.GetAsString(label)
 		if err != nil {
