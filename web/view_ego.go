@@ -2,6 +2,7 @@ package web
 
 import (
 	"io/ioutil"
+	"os"
 	"regexp"
 	"strings"
 )
@@ -17,7 +18,7 @@ func NewViewEGO() *viewEGO {
 }
 
 func (ve *viewEGO) Render(templateRelativePath string, viewParams *ViewParams) (string, error) {
-	bytes, err := ioutil.ReadFile(templateRelativePath)
+	bytes, err := ioutil.ReadFile(globalContext.viewDir + string(os.PathSeparator) + templateRelativePath)
 	if err != nil {
 		return "", err
 	}

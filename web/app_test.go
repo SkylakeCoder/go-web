@@ -27,7 +27,7 @@ func (hello helloHandler) HandleRequest(req *Request, res *Response) {
 	)
 	result, err := res.Render("test.ego", params)
 	if err != nil {
-		res.WriteString("error happends when render template.")
+		res.WriteString("error happends when render template." + err.Error())
 	} else {
 		res.WriteString(result)
 	}
@@ -36,7 +36,7 @@ func (hello helloHandler) HandleRequest(req *Request, res *Response) {
 func Test_App(test *testing.T) {
 	app := GetApp()
 	app.SetViewType(VIEW_EGO)
-	app.SetViewDir("./")
+	app.SetViewDir("./views_ego")
 	app.Get("/test", &testHandler{})
 	app.Get("/hello", helloHandler{})
 	app.Listen(8686)

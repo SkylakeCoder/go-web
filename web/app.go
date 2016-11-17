@@ -7,8 +7,7 @@ import (
 )
 
 type App struct {
-	view    ViewEngine
-	viewDir string
+	//empty now.
 }
 
 var _appSingleton *App = nil
@@ -23,14 +22,14 @@ func GetApp() *App {
 func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) {
 	switch viewType {
 	case VIEW_EGO:
-		app.view = NewViewEGO()
+		globalContext.view = NewViewEGO()
 	default:
 		log.Fatalln("error view type...")
 	}
 }
 
 func (app *App) SetViewDir(dir string) {
-	app.viewDir = dir
+	globalContext.viewDir = dir
 }
 
 func (app *App) Get(pattern string, handler RequestHandler) {
@@ -40,7 +39,7 @@ func (app *App) Get(pattern string, handler RequestHandler) {
 				req,
 			},
 			&Response{
-				res, app.view,
+				res,
 			},
 		)
 	})

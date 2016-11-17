@@ -8,7 +8,6 @@ type Request struct {
 
 type Response struct {
 	http.ResponseWriter
-	view ViewEngine
 }
 
 type RequestHandler interface {
@@ -16,7 +15,7 @@ type RequestHandler interface {
 }
 
 func (res *Response) Render(templateRelativePath string, viewParams *ViewParams) (string, error) {
-	return res.view.Render(templateRelativePath, viewParams)
+	return globalContext.view.Render(templateRelativePath, viewParams)
 }
 
 func (res *Response) WriteString(value string) {
