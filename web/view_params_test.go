@@ -1,7 +1,8 @@
 package web
 
 import (
-	"log"
+	"container/list"
+	"fmt"
 	"testing"
 )
 
@@ -12,12 +13,28 @@ func Test_ViewParams(test *testing.T) {
 		"key3", "key3value",
 		"key4", 1.23,
 	)
+	l := list.New()
+	l.PushBack(123)
+	l.PushBack("hello")
+	l.PushBack(1.23)
+	vp.PutList("keyList", l)
 	if err != nil {
 		test.Fatal("NewViewParams() failed.")
 	}
 	keys := vp.GetKeys()
 	for _, k := range keys {
-		v, _ := vp.GetAsString(k)
-		log.Println("key=", k, ", value=", v)
+		v, err := vp.GetAsString(k)
+		if err == nil {
+			fmt.Println("key=", k, ", value=", v)
+		} else {
+			l, _ := vp.GetAsList(k)
+			fmt.Print("key= ", k)
+			fmt.Print(" , value= [")
+			for e := l.Front(); e != nil; e = e.Next() {
+				fmt.Print(e.Value, " ")
+			}
+			fmt.Print("]")
+			fmt.Println()
+		}
 	}
 }

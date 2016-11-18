@@ -1,6 +1,7 @@
 package web
 
 import (
+	"container/list"
 	"errors"
 	"fmt"
 )
@@ -26,6 +27,8 @@ func NewViewParams(params ...interface{}) (*ViewParams, error) {
 			vp.PutInt(strKey, v.(int))
 		case float64:
 			vp.PutFloat(strKey, v.(float64))
+		case *list.List:
+			vp.PutList(strKey, v.(*list.List))
 		default:
 			return nil, errors.New("unknown walue type.")
 		}
@@ -42,6 +45,10 @@ func (vp *ViewParams) PutInt(k string, v int) {
 }
 
 func (vp *ViewParams) PutFloat(k string, v float64) {
+	(*vp)[k] = v
+}
+
+func (vp *ViewParams) PutList(k string, v *list.List) {
 	(*vp)[k] = v
 }
 
@@ -78,5 +85,17 @@ func (vp *ViewParams) GetAsString(k string) (string, error) {
 		f, _ := v.(float64)
 		return fmt.Sprintf("%f", f), nil
 	}
-	return "", errors.New("unknown walue type.")
+	return "", errors.New("GetAsString: invalid walue type. key=" + k)
+}
+
+func (vp *ViewParams) GetAsList(k string) (*list.List, error) {
+	v, err := vp.Get(k)
+	if err != nil {
+		return nil, err
+	}
+	l, ok := v.(*list.List)
+	if !ok {
+		return nil, errors.New("GetAsList: invalid value type. key=" + k)
+	}
+	return l, nil
 }
