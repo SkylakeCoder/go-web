@@ -1,8 +1,6 @@
 package web
 
-var globalContext context
-
-type context struct {
+type appSettings struct {
 	view    ViewEngine
 	viewDir string
 }

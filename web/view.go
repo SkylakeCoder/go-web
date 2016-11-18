@@ -13,9 +13,9 @@ type ViewEngine interface {
 	Render(templateRelativePath string, params *ViewParams) (string, error)
 }
 
-func getTemplatePath(relativePath string) string {
-	if globalContext.viewDir == "" {
-		return relativePath
+func getTemplatePath(viewDir string, templateRelativePath string) string {
+	if viewDir == "" {
+		return templateRelativePath
 	}
-	return globalContext.viewDir + string(os.PathSeparator) + relativePath
+	return viewDir + string(os.PathSeparator) + templateRelativePath
 }

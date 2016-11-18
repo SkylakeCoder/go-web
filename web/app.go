@@ -6,14 +6,16 @@ import (
 )
 
 type App struct {
-	//empty now.
+	settings *appSettings
 }
 
 var _appSingleton *App = nil
 
 func GetApp() *App {
 	if _appSingleton == nil {
-		_appSingleton = &App{}
+		_appSingleton = &App{
+			settings: &appSettings{},
+		}
 	}
 	return _appSingleton
 }
@@ -21,7 +23,7 @@ func GetApp() *App {
 func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) error {
 	switch viewType {
 	case VIEW_EGO:
-		globalContext.view = NewViewEGO()
+		app.settings.view = NewViewEGO(app.settings)
 	default:
 		return fmt.Errorf("invalid view type: %s", viewType)
 	}
@@ -29,7 +31,7 @@ func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) error {
 }
 
 func (app *App) SetViewDir(dir string) {
-	globalContext.viewDir = dir
+	app.settings.viewDir = dir
 }
 
 func (app *App) Get(pattern string, handler RequestHandler) {
@@ -40,6 +42,7 @@ func (app *App) Get(pattern string, handler RequestHandler) {
 			},
 			&Response{
 				res,
+				app.settings,
 			},
 		)
 	})
