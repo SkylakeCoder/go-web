@@ -101,7 +101,7 @@ func (ve *viewEGO) parsePartial(exp string) (path, items string, err error) {
 		return
 	}
 	path = strings.Replace(split[0], "\"", "", -1)
-	path = strings.Replace(split[0], "'", "", -1)
+	path = strings.Replace(path, "'", "", -1)
 	items = split[1]
 	err = nil
 	return
