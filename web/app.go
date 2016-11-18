@@ -2,8 +2,8 @@ package web
 
 import (
 	"fmt"
-	"log"
 	"net/http"
+	"errors"
 )
 
 type App struct {
@@ -19,13 +19,14 @@ func GetApp() *App {
 	return _appSingleton
 }
 
-func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) {
+func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) error {
 	switch viewType {
 	case VIEW_EGO:
 		globalContext.view = NewViewEGO()
 	default:
-		log.Fatalln("error view type...")
+		return errors.New("error view type.")
 	}
+	return nil
 }
 
 func (app *App) SetViewDir(dir string) {
@@ -45,9 +46,10 @@ func (app *App) Get(pattern string, handler RequestHandler) {
 	})
 }
 
-func (app *App) Listen(port uint32) {
+func (app *App) Listen(port uint32) error {
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
+	return nil
 }

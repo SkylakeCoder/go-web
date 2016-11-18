@@ -39,5 +39,8 @@ func Test_App(test *testing.T) {
 	app.SetViewDir("./views_ego")
 	app.Get("/test", &testHandler{})
 	app.Get("/hello", helloHandler{})
-	app.Listen(8686)
+	err := app.Listen(8686)
+	if err != nil {
+		test.Fatal("app.Listen error!")
+	}
 }
