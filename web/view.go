@@ -1,5 +1,7 @@
 package web
 
+import "os"
+
 type ENUM_VIEW_TYPE byte
 
 const (
@@ -9,4 +11,11 @@ const (
 
 type ViewEngine interface {
 	Render(templateRelativePath string, params *ViewParams) (string, error)
+}
+
+func getTemplatePath(relativePath string) string {
+	if globalContext.viewDir == "" {
+		return relativePath
+	}
+	return globalContext.viewDir + string(os.PathSeparator) + relativePath
 }

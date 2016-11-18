@@ -1,6 +1,7 @@
 package web
 
 import (
+	"container/list"
 	"fmt"
 	"sync"
 	"testing"
@@ -25,6 +26,12 @@ func (hello helloHandler) HandleRequest(req *Request, res *Response) {
 		"title", "go-web",
 		"text", "This is the response from the helloHandler.",
 	)
+	items := list.New()
+	items.PushBack(1)
+	items.PushBack("hello world")
+	items.PushBack(1.23456)
+	params.PutList("items", items)
+
 	result, err := res.Render("test.ego", params)
 	if err != nil {
 		res.WriteString("error happends when render template." + err.Error())

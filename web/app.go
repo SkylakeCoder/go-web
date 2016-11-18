@@ -1,9 +1,9 @@
 package web
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
-	"errors"
 )
 
 type App struct {
@@ -24,7 +24,7 @@ func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) error {
 	case VIEW_EGO:
 		globalContext.view = NewViewEGO()
 	default:
-		return errors.New("error view type.")
+		return errors.New("invalid view type.")
 	}
 	return nil
 }
