@@ -1,7 +1,6 @@
 package web
 
 import (
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"regexp"
@@ -74,7 +73,7 @@ func (ve *viewEGO) Render(templateRelativePath string, viewParams *ViewParams) (
 			html, _ := htmlMap[path]
 			itemLabels := ve.partialLabelReg.FindAllString(html, -1)
 			if len(itemLabels) < 1 {
-				return "", errors.New("invalid partial template: " + templateRelativePath)
+				return "", fmt.Errorf("invalid partial template: %s", templateRelativePath)
 			}
 			l, err := viewParams.GetAsList(items)
 			if err != nil {
@@ -97,7 +96,7 @@ func (ve *viewEGO) parsePartial(exp string) (path, items string, err error) {
 	exp = strings.Replace(exp, ")", "", -1)
 	split := strings.Split(exp, ",")
 	if len(split) != 2 {
-		err = errors.New("invalid partial expression: " + exp)
+		err = fmt.Errorf("invalid partial expression: %s", exp)
 		return
 	}
 	path = strings.Replace(split[0], "\"", "", -1)

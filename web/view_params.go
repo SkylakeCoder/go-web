@@ -2,7 +2,6 @@ package web
 
 import (
 	"container/list"
-	"errors"
 	"fmt"
 )
 
@@ -10,7 +9,7 @@ type ViewParams map[string]interface{}
 
 func NewViewParams(params ...interface{}) (*ViewParams, error) {
 	if len(params)%2 != 0 {
-		return nil, errors.New("invalid view params.")
+		return nil, fmt.Errorf("length of view params must be even.")
 	}
 	vp := &ViewParams{}
 	for i := 0; i < len(params); i += 2 {
@@ -18,7 +17,7 @@ func NewViewParams(params ...interface{}) (*ViewParams, error) {
 		v := params[i+1]
 		strKey, ok := k.(string)
 		if !ok {
-			return nil, errors.New("key must be string!")
+			return nil, fmt.Errorf("key must be string: %v", k)
 		}
 		switch v.(type) {
 		case string:
@@ -30,7 +29,7 @@ func NewViewParams(params ...interface{}) (*ViewParams, error) {
 		case *list.List:
 			vp.PutList(strKey, v.(*list.List))
 		default:
-			return nil, errors.New("unknown walue type.")
+			return nil, fmt.Errorf("unknown walue type: %v", v)
 		}
 	}
 	return vp, nil
@@ -65,7 +64,7 @@ func (vp *ViewParams) Get(k string) (interface{}, error) {
 	if ok {
 		return v, nil
 	} else {
-		return v, errors.New("can't find key:" + k)
+		return v, fmt.Errorf("can't find key: %s", k)
 	}
 }
 
@@ -85,7 +84,7 @@ func (vp *ViewParams) GetAsString(k string) (string, error) {
 		f, _ := v.(float64)
 		return fmt.Sprintf("%f", f), nil
 	}
-	return "", errors.New("GetAsString: invalid walue type. key=" + k)
+	return "", fmt.Errorf("GetAsString: invalid walue type. key=%s", k)
 }
 
 func (vp *ViewParams) GetAsList(k string) (*list.List, error) {
@@ -95,7 +94,7 @@ func (vp *ViewParams) GetAsList(k string) (*list.List, error) {
 	}
 	l, ok := v.(*list.List)
 	if !ok {
-		return nil, errors.New("GetAsList: invalid value type. key=" + k)
+		return nil, fmt.Errorf("GetAsList: invalid value type. key=%s", k)
 	}
 	return l, nil
 }

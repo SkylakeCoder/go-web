@@ -1,7 +1,6 @@
 package web
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 )
@@ -24,7 +23,7 @@ func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) error {
 	case VIEW_EGO:
 		globalContext.view = NewViewEGO()
 	default:
-		return errors.New("invalid view type.")
+		return fmt.Errorf("invalid view type: %s", viewType)
 	}
 	return nil
 }
@@ -48,8 +47,5 @@ func (app *App) Get(pattern string, handler RequestHandler) {
 
 func (app *App) Listen(port uint32) error {
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
