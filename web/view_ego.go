@@ -49,8 +49,8 @@ func (ve *viewEGO) Render(templateRelativePath string, viewParams *ViewParams) (
 		label := v[3 : len(v)-2]
 		label = strings.Replace(label, " ", "", -1)
 		if !strings.Contains(label, _PARTIAL_FLAG) {
-			_, ok := htmlMap[label]
-			if !ok {
+			_, exist := htmlMap[label]
+			if !exist {
 				bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.viewDir, label))
 				if err != nil {
 					return "", err
@@ -64,8 +64,8 @@ func (ve *viewEGO) Render(templateRelativePath string, viewParams *ViewParams) (
 			if err != nil {
 				return "", err
 			}
-			_, ok := htmlMap[path]
-			if !ok {
+			_, exist := htmlMap[path]
+			if !exist {
 				bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.viewDir, path))
 				if err != nil {
 					return "", err

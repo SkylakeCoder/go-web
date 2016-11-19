@@ -12,6 +12,7 @@ type testHandler struct {
 	lock       sync.Mutex
 }
 type helloHandler struct{}
+type userHandler struct{}
 
 func (test *testHandler) HandleRequest(req *Request, res *Response) {
 	test.lock.Lock()
@@ -40,14 +41,20 @@ func (hello helloHandler) HandleRequest(req *Request, res *Response) {
 	}
 }
 
+func (user *userHandler) HandleRequest(req *Request, res *Response) {
+	name, _ := req.Params.GetAsString("username")
+	res.WriteString(fmt.Sprintf("your name is: %s", name))
+}
+
 func Test_App(test *testing.T) {
 	app := GetApp()
 	app.SetViewType(VIEW_EGO)
 	app.SetViewDir("./views_ego")
 	app.Get("/test", &testHandler{})
 	app.Get("/hello", helloHandler{})
-	err := app.Listen(8686)
+	app.Get("/user/:username", &userHandler{})
+	err := app.Listen(8688)
 	if err != nil {
-		test.Fatal("app.Listen error!")
+		test.Fatal("app.Listen error: ", err)
 	}
 }
