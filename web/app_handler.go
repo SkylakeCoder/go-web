@@ -68,7 +68,7 @@ func (handler *appHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)
 			}
 		}
 		if !served {
-			log.Println("unrecognized url: %s", url)
+			log.Printf("unrecognized url: %s\n", url)
 		}
 	}
 }
@@ -77,7 +77,7 @@ func (handler *appHandler) addPatternHandler(pattern string, reqHandler RequestH
 	pattern = strings.Replace(pattern, " ", "", -1)
 	_, exist := handler.patternMap[pattern]
 	if exist {
-		return fmt.Errorf("the pattern is exist: ", pattern)
+		return fmt.Errorf("the pattern is exist: %s", pattern)
 	}
 	handler.patternMap[pattern] = reqHandler
 	return nil

@@ -27,7 +27,7 @@ func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) error {
 	case VIEW_EGO:
 		app.settings.view = NewViewEGO(app.settings)
 	default:
-		return fmt.Errorf("invalid view type: %s", viewType)
+		return fmt.Errorf("invalid view type: %v", viewType)
 	}
 	return nil
 }
