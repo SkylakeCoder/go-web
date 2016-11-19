@@ -10,7 +10,7 @@ const (
 )
 
 type ViewEngine interface {
-	Render(templateRelativePath string, params *ViewParams) (string, error)
+	Render(templateRelativePath string, params *KeyValues) (string, error)
 }
 
 func getTemplatePath(viewDir string, templateRelativePath string) string {

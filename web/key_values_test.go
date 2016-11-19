@@ -7,7 +7,7 @@ import (
 )
 
 func Test_ViewParams(test *testing.T) {
-	vp, err := NewViewParams(
+	vp, err := NewKeyValues(
 		"key1", 1,
 		"key2", "key2value",
 		"key3", "key3value",
@@ -19,7 +19,7 @@ func Test_ViewParams(test *testing.T) {
 	l.PushBack(1.23)
 	vp.PutList("keyList", l)
 	if err != nil {
-		test.Fatal("NewViewParams() failed.")
+		test.Fatal("NewKeyValues() failed.")
 	}
 	keys := vp.GetKeys()
 	for _, k := range keys {

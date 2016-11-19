@@ -5,13 +5,13 @@ import (
 	"fmt"
 )
 
-type ViewParams map[string]interface{}
+type KeyValues map[string]interface{}
 
-func NewViewParams(params ...interface{}) (*ViewParams, error) {
+func NewKeyValues(params ...interface{}) (*KeyValues, error) {
 	if len(params)%2 != 0 {
-		return nil, fmt.Errorf("length of view params must be even.")
+		return nil, fmt.Errorf("length of key-values must be even.")
 	}
-	vp := &ViewParams{}
+	vp := &KeyValues{}
 	for i := 0; i < len(params); i += 2 {
 		k := params[i]
 		v := params[i+1]
@@ -35,23 +35,23 @@ func NewViewParams(params ...interface{}) (*ViewParams, error) {
 	return vp, nil
 }
 
-func (vp *ViewParams) PutString(k string, v string) {
+func (vp *KeyValues) PutString(k string, v string) {
 	(*vp)[k] = v
 }
 
-func (vp *ViewParams) PutInt(k string, v int) {
+func (vp *KeyValues) PutInt(k string, v int) {
 	(*vp)[k] = v
 }
 
-func (vp *ViewParams) PutFloat(k string, v float64) {
+func (vp *KeyValues) PutFloat(k string, v float64) {
 	(*vp)[k] = v
 }
 
-func (vp *ViewParams) PutList(k string, v *list.List) {
+func (vp *KeyValues) PutList(k string, v *list.List) {
 	(*vp)[k] = v
 }
 
-func (vp *ViewParams) GetKeys() []string {
+func (vp *KeyValues) GetKeys() []string {
 	result := []string{}
 	for k, _ := range *vp {
 		result = append(result, k)
@@ -59,7 +59,7 @@ func (vp *ViewParams) GetKeys() []string {
 	return result
 }
 
-func (vp *ViewParams) Get(k string) (interface{}, error) {
+func (vp *KeyValues) Get(k string) (interface{}, error) {
 	v, ok := (*vp)[k]
 	if ok {
 		return v, nil
@@ -68,7 +68,7 @@ func (vp *ViewParams) Get(k string) (interface{}, error) {
 	}
 }
 
-func (vp *ViewParams) GetAsString(k string) (string, error) {
+func (vp *KeyValues) GetAsString(k string) (string, error) {
 	v, err := vp.Get(k)
 	if err != nil {
 		return "", err
@@ -87,7 +87,7 @@ func (vp *ViewParams) GetAsString(k string) (string, error) {
 	return "", fmt.Errorf("GetAsString: invalid walue type. key=%s", k)
 }
 
-func (vp *ViewParams) GetAsList(k string) (*list.List, error) {
+func (vp *KeyValues) GetAsList(k string) (*list.List, error) {
 	v, err := vp.Get(k)
 	if err != nil {
 		return nil, err

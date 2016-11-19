@@ -23,7 +23,7 @@ func (test *testHandler) HandleRequest(req *Request, res *Response) {
 }
 
 func (hello helloHandler) HandleRequest(req *Request, res *Response) {
-	params, _ := NewViewParams(
+	params, _ := NewKeyValues(
 		"title", "go-web",
 		"text", "This is the response from the helloHandler.",
 	)

@@ -53,7 +53,7 @@ func (handler *appHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)
 					}
 					paramValue = string(url[i]) + paramValue
 				}
-				params, _ := NewViewParams(paramKey, paramValue)
+				params, _ := NewKeyValues(paramKey, paramValue)
 				v.HandleRequest(
 					&Request{
 						req, params,

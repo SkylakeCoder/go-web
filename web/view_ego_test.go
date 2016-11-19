@@ -7,7 +7,7 @@ import (
 )
 
 func Test_ViewEGO(test *testing.T) {
-	vp, _ := NewViewParams(
+	vp, _ := NewKeyValues(
 		"title", "ego-test",
 		"text", "test...",
 	)

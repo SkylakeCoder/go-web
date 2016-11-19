@@ -26,7 +26,7 @@ func NewViewEGO(settings *appSettings) *viewEGO {
 	}
 }
 
-func (ve *viewEGO) Render(templateRelativePath string, viewParams *ViewParams) (string, error) {
+func (ve *viewEGO) Render(templateRelativePath string, viewParams *KeyValues) (string, error) {
 	bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.viewDir, templateRelativePath))
 	if err != nil {
 		return "", err
