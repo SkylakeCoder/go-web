@@ -36,6 +36,10 @@ func (app *App) SetViewDir(dir string) {
 	app.settings.viewDir = dir
 }
 
+func (app *App) SetStaticDir(dir string) {
+	app.settings.staticDir = dir
+}
+
 func (app *App) Get(pattern string, handler RequestHandler) error {
 	err := app.handler.addPatternHandler(pattern, handler)
 	return err

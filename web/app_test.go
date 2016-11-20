@@ -13,6 +13,7 @@ type testHandler struct {
 }
 type helloHandler struct{}
 type userHandler struct{}
+type notFoundHandler struct{}
 
 func (test *testHandler) HandleRequest(req *Request, res *Response) {
 	test.lock.Lock()
@@ -46,13 +47,19 @@ func (user *userHandler) HandleRequest(req *Request, res *Response) {
 	res.WriteString(fmt.Sprintf("your name is: %s", name))
 }
 
+func (notFound *notFoundHandler) HandleRequest(req *Request, res *Response) {
+	res.WriteString(fmt.Sprintf("couldn't find the url: %s", req.URL.Path))
+}
+
 func Test_App(test *testing.T) {
 	app := GetApp()
 	app.SetViewType(VIEW_EGO)
 	app.SetViewDir("./views_ego")
+	app.SetStaticDir("./static")
 	app.Get("/test", &testHandler{})
 	app.Get("/hello", helloHandler{})
 	app.Get("/user/:username", &userHandler{})
+	app.Get("/404", &notFoundHandler{})
 	err := app.Listen(8688)
 	if err != nil {
 		test.Fatal("app.Listen error: ", err)

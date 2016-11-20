@@ -31,20 +31,39 @@ func (handler *appHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)
 				req, nil,
 			},
 			&Response{
-				res,
-				handler.settings,
+				res, handler.settings,
 			},
 		)
 	} else {
-		// check the situation /xx/:xxx
-		if handler.checkPatternColon(res, req) {
+		// check if it's a static resource.
+		if handler.handlePatternStatic(res, req) {
 			return
 		}
+		// check the situation /xx/:xxx
+		if handler.handlePatternColon(res, req) {
+			return
+		}
+		// handle 404...
 		log.Printf("unrecognized url: %s\n", url)
+		handler.handlePattern404(res, req)
 	}
 }
 
-func (handler *appHandler) checkPatternColon(res http.ResponseWriter, req *http.Request) bool {
+func (handler *appHandler) handlePatternStatic(res http.ResponseWriter, req *http.Request) bool {
+	url := req.URL.Path
+	tmpURL := strings.Trim(url, "/")
+	staticDir := strings.Trim(handler.settings.staticDir, "/")
+	staticDir = strings.TrimLeft(staticDir, "./")
+	fmt.Println("tmpURL=", tmpURL, ", staticDir=", staticDir)
+	if strings.HasPrefix(tmpURL, staticDir) {
+		handler := http.FileServer(http.Dir("."))
+		handler.ServeHTTP(res, req)
+		return true
+	}
+	return false
+}
+
+func (handler *appHandler) handlePatternColon(res http.ResponseWriter, req *http.Request) bool {
 	url := req.URL.Path
 	for k, v := range handler.patternMap {
 		matches := handler.routerRuleReg.FindAllString(k, -1)
@@ -79,6 +98,22 @@ func (handler *appHandler) checkPatternColon(res http.ResponseWriter, req *http.
 			)
 			return true
 		}
+	}
+	return false
+}
+
+func (handler *appHandler) handlePattern404(res http.ResponseWriter, req *http.Request) bool {
+	notFoundHandler, exist := handler.patternMap["/404"]
+	if exist {
+		notFoundHandler.HandleRequest(
+			&Request{
+				req, nil,
+			},
+			&Response{
+				res, handler.settings,
+			},
+		)
+		return true
 	}
 	return false
 }
