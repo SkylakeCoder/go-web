@@ -49,16 +49,16 @@ func (handler *appHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)
 				continue
 			}
 			fixedURL := ""
-			for i := 0; i < urlSplitsLen - 1; i++ {
+			for i := 0; i < urlSplitsLen-1; i++ {
 				fixedURL += urlSplits[i]
-				if i < urlSplitsLen - 2 {
+				if i < urlSplitsLen-2 {
 					fixedURL += "/"
 				}
 			}
 			k = strings.Replace(k, matches[0], "", -1)
 			if k == fixedURL {
 				paramKey := strings.Replace(matches[0], "/:", "", -1)
-				paramValue := urlSplits[len(urlSplits) - 1]
+				paramValue := urlSplits[len(urlSplits)-1]
 				params, _ := NewKeyValues(paramKey, paramValue)
 				v.HandleRequest(
 					&Request{
