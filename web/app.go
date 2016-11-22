@@ -10,16 +10,12 @@ type App struct {
 	handler  *appHandler
 }
 
-var _appSingleton *App = nil
-
 func GetApp() *App {
-	if _appSingleton == nil {
-		_appSingleton = &App{
-			settings: &appSettings{},
-		}
-		_appSingleton.handler = newAppHandler(_appSingleton.settings)
+	app := &App{
+		settings: &appSettings{},
 	}
-	return _appSingleton
+	app.handler = newAppHandler(app.settings)
+	return app
 }
 
 func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) error {
