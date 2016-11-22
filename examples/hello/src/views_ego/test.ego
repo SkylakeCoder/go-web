@@ -1,0 +1,17 @@
+<html>
+<head>
+<title><%= title %></title>
+</head>
+
+<body>
+<script src="static/js/test.js"></script>
+<img src="static/img/JC.jpeg"></img>
+<p><%= text %></p>
+<ul><%-partial('listitem.ego', items)%></ul>
+
+<form action="http://localhost:8688/post_form" method="post">
+    <p>input something: <input type="text" name="inputText"></p>
+    <p><input type="submit" value="submit"></p>
+</form>
+</body>
+</html>
