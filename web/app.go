@@ -37,7 +37,12 @@ func (app *App) SetStaticDir(dir string) {
 }
 
 func (app *App) Get(pattern string, handler RequestHandler) error {
-	err := app.handler.addPatternHandler(pattern, handler)
+	err := app.handler.addPatternHandler(HTTP_GET, pattern, handler)
+	return err
+}
+
+func (app *App) Post(pattern string, handler RequestHandler) error {
+	err := app.handler.addPatternHandler(HTTP_POST, pattern, handler)
 	return err
 }
 

@@ -21,9 +21,10 @@ func (test *testHandler) HandleRequest(req *Request, res *Response) {
 	defer test.lock.Unlock()
 
 	res.WriteString(fmt.Sprintf("You have visit this page %d times.", test.visitCount))
+	res.Flush()
 }
 
-func (hello helloHandler) HandleRequest(req *Request, res *Response) {
+func (hello *helloHandler) HandleRequest(req *Request, res *Response) {
 	params, _ := NewKeyValues(
 		"title", "go-web",
 		"text", "This is the response from the helloHandler.",
@@ -40,15 +41,19 @@ func (hello helloHandler) HandleRequest(req *Request, res *Response) {
 	} else {
 		res.WriteString(result)
 	}
+	res.WriteString("key1=" + req.FormValue("key1"))
+	res.Flush()
 }
 
 func (user *userHandler) HandleRequest(req *Request, res *Response) {
 	name, _ := req.Params.GetAsString("username")
 	res.WriteString(fmt.Sprintf("your name is: %s", name))
+	res.Flush()
 }
 
 func (notFound *notFoundHandler) HandleRequest(req *Request, res *Response) {
 	res.WriteString(fmt.Sprintf("couldn't find the url: %s", req.URL.Path))
+	res.Flush()
 }
 
 func Test_App(test *testing.T) {
@@ -57,7 +62,8 @@ func Test_App(test *testing.T) {
 	app.SetViewDir("./views_ego")
 	app.SetStaticDir("./static")
 	app.Get("/test", &testHandler{})
-	app.Get("/hello", helloHandler{})
+	app.Get("/hello", &helloHandler{})
+	app.Post("/hello", &helloHandler{})
 	app.Get("/user/:username", &userHandler{})
 	app.Get("/404", &notFoundHandler{})
 	err := app.Listen(8688)
