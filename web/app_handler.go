@@ -4,21 +4,44 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"regexp"
 	"strings"
 )
 
-type appHandler struct {
-	settings      *appSettings
-	routerRuleReg *regexp.Regexp
-	handlersMap   map[HTTPMethod]map[string]RequestHandler
+type HandlersMap map[HTTPMethod]map[string]RequestHandler
+
+func (hm HandlersMap) GetPatterns(method HTTPMethod) []string {
+	result := []string{}
+	subMap, exist := hm[method]
+	if exist {
+		for k, _ := range subMap {
+			result = append(result, k)
+		}
+	}
+	return result
 }
 
-func newAppHandler(settings *appSettings) *appHandler {
+func (hm HandlersMap) GetHandler(method HTTPMethod, pattern string) RequestHandler {
+	subMap, exist := hm[method]
+	if !exist {
+		return nil
+	}
+	h, exist := subMap[pattern]
+	if !exist {
+		return nil
+	}
+	return h
+}
+
+type appHandler struct {
+	settings      *AppSettings
+	handlersMap   HandlersMap
+	extraPatterns []PatternHandler
+}
+
+func newAppHandler(settings *AppSettings) *appHandler {
 	return &appHandler{
-		settings:      settings,
-		routerRuleReg: regexp.MustCompile("/:.+"),
-		handlersMap:   make(map[HTTPMethod]map[string]RequestHandler),
+		settings:    settings,
+		handlersMap: make(HandlersMap),
 	}
 }
 
@@ -36,13 +59,10 @@ func (handler *appHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)
 			newResponse(res, handler.settings),
 		)
 	} else {
-		// check if it's a static resource.
-		if handler.handlePatternStatic(res, req) {
-			return
-		}
-		// check the situation /xx/:xxx
-		if handler.handlePatternColon(res, req) {
-			return
+		for _, patternHandler := range handler.extraPatterns {
+			if patternHandler.HandlePattern(req, res, handler.handlersMap, handler.settings) {
+				return
+			}
 		}
 		// handle 404...
 		log.Printf("unrecognized url: %s\n", url)
@@ -50,55 +70,8 @@ func (handler *appHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)
 	}
 }
 
-func (handler *appHandler) handlePatternStatic(res http.ResponseWriter, req *http.Request) bool {
-	url := req.URL.Path
-	tmpURL := strings.Trim(url, "/")
-	staticDir := strings.Trim(handler.settings.staticDir, "/")
-	staticDir = strings.TrimLeft(staticDir, "./")
-	if strings.HasPrefix(tmpURL, staticDir) {
-		handler := http.FileServer(http.Dir("."))
-		handler.ServeHTTP(res, req)
-		return true
-	}
-	return false
-}
-
-func (handler *appHandler) handlePatternColon(res http.ResponseWriter, req *http.Request) bool {
-	patternMap, exist := handler.handlersMap[HTTPMethod(req.Method)]
-	if !exist {
-		return false
-	}
-	url := req.URL.Path
-	for k, v := range patternMap {
-		matches := handler.routerRuleReg.FindAllString(k, -1)
-		if len(matches) != 1 {
-			continue
-		}
-		urlSplits := strings.Split(url, "/")
-		urlSplitsLen := len(urlSplits)
-		if urlSplitsLen < 2 {
-			continue
-		}
-		fixedURL := ""
-		for i := 0; i < urlSplitsLen-1; i++ {
-			fixedURL += urlSplits[i]
-			if i < urlSplitsLen-2 {
-				fixedURL += "/"
-			}
-		}
-		k = strings.Replace(k, matches[0], "", -1)
-		if k == fixedURL {
-			paramKey := strings.Replace(matches[0], "/:", "", -1)
-			paramValue := urlSplits[len(urlSplits)-1]
-			params, _ := NewKeyValues(paramKey, paramValue)
-			v.HandleRequest(
-				newRequest(req, params),
-				newResponse(res, handler.settings),
-			)
-			return true
-		}
-	}
-	return false
+func (handler *appHandler) registerPatternHandler(patternHandler PatternHandler) {
+	handler.extraPatterns = append(handler.extraPatterns, patternHandler)
 }
 
 func (handler *appHandler) handlePattern404(res http.ResponseWriter, req *http.Request) bool {

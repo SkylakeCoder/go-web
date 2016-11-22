@@ -11,13 +11,13 @@ const _PARTIAL_FLAG string = "partial"
 const _LIST_ITEM_FLAG string = "listitem"
 
 type viewEGO struct {
-	settings        *appSettings
+	settings        *AppSettings
 	varLabelReg     *regexp.Regexp
 	htmlLabelReg    *regexp.Regexp
 	partialLabelReg *regexp.Regexp
 }
 
-func NewViewEGO(settings *appSettings) *viewEGO {
+func NewViewEGO(settings *AppSettings) *viewEGO {
 	return &viewEGO{
 		settings:        settings,
 		varLabelReg:     regexp.MustCompile("<%=.+?%>"),
@@ -27,7 +27,7 @@ func NewViewEGO(settings *appSettings) *viewEGO {
 }
 
 func (ve *viewEGO) Render(templateRelativePath string, viewParams *KeyValues) (string, error) {
-	bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.viewDir, templateRelativePath))
+	bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.ViewDir, templateRelativePath))
 	if err != nil {
 		return "", err
 	}
@@ -51,7 +51,7 @@ func (ve *viewEGO) Render(templateRelativePath string, viewParams *KeyValues) (s
 		if !strings.Contains(label, _PARTIAL_FLAG) {
 			_, exist := htmlMap[label]
 			if !exist {
-				bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.viewDir, label))
+				bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.ViewDir, label))
 				if err != nil {
 					return "", err
 				}
@@ -66,7 +66,7 @@ func (ve *viewEGO) Render(templateRelativePath string, viewParams *KeyValues) (s
 			}
 			_, exist := htmlMap[path]
 			if !exist {
-				bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.viewDir, path))
+				bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.ViewDir, path))
 				if err != nil {
 					return "", err
 				}

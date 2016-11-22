@@ -17,8 +17,8 @@ func Test_ViewEGO(test *testing.T) {
 	items.PushBack(1.23456)
 	vp.PutList("items", items)
 
-	settings := &appSettings{
-		viewDir: "./views_ego",
+	settings := &AppSettings{
+		ViewDir: "./views_ego",
 	}
 	ego := NewViewEGO(settings)
 	v, err := ego.Render("test.ego", vp)

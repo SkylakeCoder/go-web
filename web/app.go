@@ -6,22 +6,23 @@ import (
 )
 
 type App struct {
-	settings *appSettings
+	settings *AppSettings
 	handler  *appHandler
 }
 
 func GetApp() *App {
 	app := &App{
-		settings: &appSettings{},
+		settings: &AppSettings{},
 	}
 	app.handler = newAppHandler(app.settings)
+	app.registerBuildInPatternHandlers()
 	return app
 }
 
 func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) error {
 	switch viewType {
 	case VIEW_EGO:
-		app.settings.view = NewViewEGO(app.settings)
+		app.settings.View = NewViewEGO(app.settings)
 	default:
 		return fmt.Errorf("invalid view type: %v", viewType)
 	}
@@ -29,11 +30,11 @@ func (app *App) SetViewType(viewType ENUM_VIEW_TYPE) error {
 }
 
 func (app *App) SetViewDir(dir string) {
-	app.settings.viewDir = dir
+	app.settings.ViewDir = dir
 }
 
 func (app *App) SetStaticDir(dir string) {
-	app.settings.staticDir = dir
+	app.settings.StaticDir = dir
 }
 
 func (app *App) Get(pattern string, handler RequestHandler) error {
@@ -46,7 +47,16 @@ func (app *App) Post(pattern string, handler RequestHandler) error {
 	return err
 }
 
+func (app *App) RegisterPatternHandler(handler PatternHandler) {
+	app.handler.registerPatternHandler(handler)
+}
+
 func (app *App) Listen(port uint32) error {
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), app.handler)
 	return err
+}
+
+func (app *App) registerBuildInPatternHandlers() {
+	app.RegisterPatternHandler(&patternStatic{})
+	app.RegisterPatternHandler(&patternColon{})
 }

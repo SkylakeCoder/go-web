@@ -24,7 +24,7 @@ type Request struct {
 
 type Response struct {
 	http.ResponseWriter
-	settings        *appSettings
+	settings        *AppSettings
 	respCache       string
 	headerCache     map[string]string
 	statusCodeCache int
@@ -41,7 +41,7 @@ func newRequest(req *http.Request, params *KeyValues) *Request {
 	return newReq
 }
 
-func newResponse(res http.ResponseWriter, settings *appSettings) *Response {
+func newResponse(res http.ResponseWriter, settings *AppSettings) *Response {
 	newRes := &Response{
 		res, settings,
 		"", make(map[string]string),
@@ -62,7 +62,7 @@ func (req *Request) GetReqArgs() (url.Values, error) {
 }
 
 func (res *Response) Render(templateRelativePath string, viewParams *KeyValues) (string, error) {
-	return res.settings.view.Render(templateRelativePath, viewParams)
+	return res.settings.View.Render(templateRelativePath, viewParams)
 }
 
 func (res *Response) SetHeader(key string, value string) {
