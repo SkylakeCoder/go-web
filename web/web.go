@@ -95,7 +95,10 @@ func (res *Response) WriteString(value string) {
 
 func (res *Response) WriteJSON(value interface{}) error {
 	bytes, err := json.Marshal(value)
-	res.respCache += string(bytes)
+	if err == nil {
+		res.respCache += string(bytes)
+		res.SetHeader("Content-Type", "application/json")
+	}
 	return err
 }
 
