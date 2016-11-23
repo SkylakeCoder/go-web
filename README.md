@@ -1,6 +1,9 @@
 # go-web
 Just a toy web framework written in golang.
 
+[![GoDoc](https://godoc.org/github.com/SkylakeCoder/go-web/web?status.svg)](https://godoc.org/github.com/SkylakeCoder/go-web/web)
+[![Build Status](https://travis-ci.org/SkylakeCoder/go-web.svg?branch=master)](https://travis-ci.org/SkylakeCoder/go-web)
+
 ## install
 ```
 $ go get github.com/SkylakeCoder/go-web
