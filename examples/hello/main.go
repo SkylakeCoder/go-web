@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/SkylakeCoder/go-web/web"
 	"./handlers"
+	"github.com/SkylakeCoder/go-web/web"
 	"log"
 )
 
@@ -13,6 +13,7 @@ func main() {
 	app.SetStaticDir("./static")
 
 	app.Get("/hello", &handlers.Hello{})
+	app.Get("/json", &handlers.JSON{})
 	app.Get("/view", &handlers.View{})
 	app.Post("/post_form", &handlers.PostForm{})
 	app.Get("/user/:username", &handlers.UserColon{})

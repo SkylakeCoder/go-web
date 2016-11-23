@@ -1,14 +1,14 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/SkylakeCoder/go-web/web"
 	"sync"
-	"fmt"
 )
 
 type Count struct {
 	visitCount int64
-	lock sync.Mutex
+	lock       sync.Mutex
 }
 
 func (c *Count) HandleRequest(req *web.Request, res *web.Response) {

@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/SkylakeCoder/go-web/web"
 	"fmt"
+	"github.com/SkylakeCoder/go-web/web"
 )
 
 type PostForm struct{}

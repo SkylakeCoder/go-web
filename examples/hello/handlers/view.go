@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/SkylakeCoder/go-web/web"
 	"container/list"
+	"github.com/SkylakeCoder/go-web/web"
 )
 
 type View struct{}
