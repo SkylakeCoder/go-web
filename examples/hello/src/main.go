@@ -17,6 +17,8 @@ func main() {
 	app.Post("/post_form", &handlers.PostForm{})
 	app.Get("/user/:username", &handlers.UserColon{})
 	app.Get("/count", &handlers.Count{})
+	app.Get("/404", &handlers.Handler404{})
+	app.Post("/404", &handlers.Handler404{})
 
 	err := app.Listen(8688)
 	if err != nil {
