@@ -11,7 +11,7 @@ const (
 	VIEW_EGO
 )
 
-// ViewEngine interface helps people make their own view template parse.
+// ViewEngine interface helps people make their own view template parser.
 type ViewEngine interface {
 	Render(templateRelativePath string, params *KeyValues) (string, error)
 }

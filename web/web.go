@@ -53,7 +53,7 @@ func newResponse(res http.ResponseWriter, settings *AppSettings) *Response {
 	return newRes
 }
 
-// Get the form value if the request method is get or post.
+// GetReqArgs returns the form value if the request method is "GET" or "POST".
 func (req *Request) GetReqArgs() (url.Values, error) {
 	switch HTTPMethod(req.Method) {
 	case HTTP_GET:
@@ -65,17 +65,17 @@ func (req *Request) GetReqArgs() (url.Values, error) {
 	}
 }
 
-// Parse a view template.
+// Render parses a view template.
 func (res *Response) Render(templateRelativePath string, viewParams *KeyValues) (string, error) {
 	return res.settings.View.Render(templateRelativePath, viewParams)
 }
 
-// Set response header.
+// SetHeader sets the response header.
 func (res *Response) SetHeader(key string, value string) {
 	res.headerCache[key] = value
 }
 
-// Set response headers.
+// SetHeaders sets the response headers.
 func (res *Response) SetHeaders(params ...interface{}) error {
 	keyValues, err := NewKeyValues(params)
 	if err != nil {
@@ -92,18 +92,18 @@ func (res *Response) SetHeaders(params ...interface{}) error {
 	return nil
 }
 
-// Set the status code of response.
+// SetStatusCode sets the status code of response.
 func (res *Response) SetStatusCode(code int) {
 	res.statusCodeCache = code
 }
 
-// Write string data to the response cache.
+// WriteString writes string data to the response cache.
 // The response won't be send util you call the Flush() method.
 func (res *Response) WriteString(value string) {
 	res.respCache += value
 }
 
-// Write json data to the response cache.
+// WriteJSON writes json data to the response cache.
 // The response won't be send util you call the Flush() method.
 func (res *Response) WriteJSON(value interface{}) error {
 	bytes, err := json.Marshal(value)

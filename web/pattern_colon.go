@@ -10,7 +10,7 @@ type patternColon struct {
 	colonReg *regexp.Regexp
 }
 
-// Handle the special pattern: /xx/:xxx
+// HandlePattern handles the special pattern: /xx/:xxx
 func (pc *patternColon) HandlePattern(req *http.Request, res http.ResponseWriter, handlersMap HandlersMap, settings *AppSettings) bool {
 	if pc.colonReg == nil {
 		pc.colonReg = regexp.MustCompile("/:.+")

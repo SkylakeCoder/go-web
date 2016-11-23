@@ -7,7 +7,7 @@ import (
 
 type patternStatic struct{}
 
-// Handle the static pattern.
+// HandlePattern handles the static pattern.
 func (ps *patternStatic) HandlePattern(req *http.Request, res http.ResponseWriter, handlersMap HandlersMap, settings *AppSettings) bool {
 	// check if it's a static resource.
 	url := req.URL.Path

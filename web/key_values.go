@@ -8,7 +8,7 @@ import (
 // KeyValues is an utility that helps to make the key-value pairs more comfortably.
 type KeyValues map[string]interface{}
 
-// Get a new KeyValues instance.
+// NewKeyValues returns a new KeyValues instance.
 // Example:
 // keyValues := NewKeyValues(
 //     "key1", 1,
@@ -43,30 +43,30 @@ func NewKeyValues(params ...interface{}) (*KeyValues, error) {
 	return vp, nil
 }
 
-// Put a key-value pair and the value's type is string.
+// PutString puts a key-value pair and the value's type is string.
 func (vp *KeyValues) PutString(k string, v string) {
 	(*vp)[k] = v
 }
 
-// Put a key-value pair and the value's type is int.
+// PutInt puts a key-value pair and the value's type is int.
 func (vp *KeyValues) PutInt(k string, v int) {
 	(*vp)[k] = v
 }
 
-// Put a key-value pair and the value's type is float64.
+// PutFloat puts a key-value pair and the value's type is float64.
 func (vp *KeyValues) PutFloat(k string, v float64) {
 	(*vp)[k] = v
 }
 
-// Put a key-value pair and the value's type is *list.List.
+// PutList puts a key-value pair and the value's type is *list.List.
 func (vp *KeyValues) PutList(k string, v *list.List) {
 	(*vp)[k] = v
 }
 
-// Get all the keys the KeyValues object.
+// GetKeys returns the keys the KeyValues object.
 func (vp *KeyValues) GetKeys() []string {
 	result := []string{}
-	for k, _ := range *vp {
+	for k := range *vp {
 		result = append(result, k)
 	}
 	return result
@@ -82,7 +82,7 @@ func (vp *KeyValues) Get(k string) (interface{}, error) {
 	}
 }
 
-// Get the value by key and convert the value to the string type,
+// GetAsString gets the value by key and convert the value to the string type,
 // it will return an error if convert failed.
 func (vp *KeyValues) GetAsString(k string) (string, error) {
 	v, err := vp.Get(k)
@@ -103,7 +103,7 @@ func (vp *KeyValues) GetAsString(k string) (string, error) {
 	return "", fmt.Errorf("GetAsString: invalid walue type. key=%s", k)
 }
 
-// Get the value by key and convert the value to the *list.List type,
+// GetAsList gets the value by key and convert the value to the *list.List type,
 // it will return an error if convert failed.
 func (vp *KeyValues) GetAsList(k string) (*list.List, error) {
 	v, err := vp.Get(k)

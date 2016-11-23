@@ -10,19 +10,19 @@ import (
 // HandlersMap is a map that matches the request url and it's handler in a http method.
 type HandlersMap map[HTTPMethod]map[string]RequestHandler
 
-// Get the pattern(url) list in a http method.
+// GetPatterns gets the pattern(url) list in a http method.
 func (hm HandlersMap) GetPatterns(method HTTPMethod) []string {
 	result := []string{}
 	subMap, exist := hm[method]
 	if exist {
-		for k, _ := range subMap {
+		for k := range subMap {
 			result = append(result, k)
 		}
 	}
 	return result
 }
 
-// Get the handler matches the request method and url.
+// GetHandler gets the handler matches the request method and url.
 func (hm HandlersMap) GetHandler(method HTTPMethod, pattern string) RequestHandler {
 	subMap, exist := hm[method]
 	if !exist {
@@ -69,7 +69,6 @@ func (handler *appHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)
 				return
 			}
 		}
-		// handle 404...
 		log.Printf("unrecognized url: %s\n", url)
 		handler.handlePattern404(res, req)
 	}

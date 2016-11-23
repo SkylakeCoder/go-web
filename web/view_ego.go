@@ -28,7 +28,7 @@ func newViewEGO(settings *AppSettings) *viewEGO {
 	}
 }
 
-// Parse ego template.
+// Render parses the ego template and return the result.
 func (ve *viewEGO) Render(templateRelativePath string, viewParams *KeyValues) (string, error) {
 	bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.ViewDir, templateRelativePath))
 	if err != nil {
