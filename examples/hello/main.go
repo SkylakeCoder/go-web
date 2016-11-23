@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	app := web.GetApp()
+	app := web.NewApp()
 	app.SetViewType(web.VIEW_EGO)
 	app.SetViewDir("./views_ego")
 	app.SetStaticDir("./static")
