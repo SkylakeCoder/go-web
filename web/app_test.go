@@ -57,7 +57,7 @@ func (notFound *notFoundHandler) HandleRequest(req *Request, res *Response) {
 }
 
 func Test_App(test *testing.T) {
-	app := GetApp()
+	app := NewApp()
 	app.SetViewType(VIEW_EGO)
 	app.SetViewDir("./views_ego")
 	app.SetStaticDir("./static")

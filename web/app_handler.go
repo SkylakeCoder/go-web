@@ -7,8 +7,10 @@ import (
 	"strings"
 )
 
+// HandlersMap is a map that matches the request url and it's handler in a http method.
 type HandlersMap map[HTTPMethod]map[string]RequestHandler
 
+// Get the pattern(url) list in a http method.
 func (hm HandlersMap) GetPatterns(method HTTPMethod) []string {
 	result := []string{}
 	subMap, exist := hm[method]
@@ -20,6 +22,7 @@ func (hm HandlersMap) GetPatterns(method HTTPMethod) []string {
 	return result
 }
 
+// Get the handler matches the request method and url.
 func (hm HandlersMap) GetHandler(method HTTPMethod, pattern string) RequestHandler {
 	subMap, exist := hm[method]
 	if !exist {
@@ -32,6 +35,8 @@ func (hm HandlersMap) GetHandler(method HTTPMethod, pattern string) RequestHandl
 	return h
 }
 
+// appHandler is a http.Handler object.
+// it finds the correct RequestHandler to handle the http requests.
 type appHandler struct {
 	settings      *AppSettings
 	handlersMap   HandlersMap

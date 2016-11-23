@@ -10,6 +10,8 @@ import (
 const _PARTIAL_FLAG string = "partial"
 const _LIST_ITEM_FLAG string = "listitem"
 
+// viewEGO is the implementation of the ego template.
+// ego template is just like the ejs in node.js Express framework.
 type viewEGO struct {
 	settings        *AppSettings
 	varLabelReg     *regexp.Regexp
@@ -17,7 +19,7 @@ type viewEGO struct {
 	partialLabelReg *regexp.Regexp
 }
 
-func NewViewEGO(settings *AppSettings) *viewEGO {
+func newViewEGO(settings *AppSettings) *viewEGO {
 	return &viewEGO{
 		settings:        settings,
 		varLabelReg:     regexp.MustCompile("<%=.+?%>"),
@@ -26,6 +28,7 @@ func NewViewEGO(settings *AppSettings) *viewEGO {
 	}
 }
 
+// Parse ego template.
 func (ve *viewEGO) Render(templateRelativePath string, viewParams *KeyValues) (string, error) {
 	bytes, err := ioutil.ReadFile(getTemplatePath(ve.settings.ViewDir, templateRelativePath))
 	if err != nil {

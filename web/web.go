@@ -17,11 +17,13 @@ const (
 	HTTP_PATCH  HTTPMethod = "PATCH"
 )
 
+// Request object stands for a http request.
 type Request struct {
 	*http.Request
 	Params *KeyValues
 }
 
+// Response object stands for a http response.
 type Response struct {
 	http.ResponseWriter
 	settings        *AppSettings
@@ -30,6 +32,7 @@ type Response struct {
 	statusCodeCache int
 }
 
+// RequestHandler interface helps people to make their own request handler.
 type RequestHandler interface {
 	HandleRequest(req *Request, res *Response)
 }
@@ -50,6 +53,7 @@ func newResponse(res http.ResponseWriter, settings *AppSettings) *Response {
 	return newRes
 }
 
+// Get the form value if the request method is get or post.
 func (req *Request) GetReqArgs() (url.Values, error) {
 	switch HTTPMethod(req.Method) {
 	case HTTP_GET:
@@ -61,14 +65,17 @@ func (req *Request) GetReqArgs() (url.Values, error) {
 	}
 }
 
+// Parse a view template.
 func (res *Response) Render(templateRelativePath string, viewParams *KeyValues) (string, error) {
 	return res.settings.View.Render(templateRelativePath, viewParams)
 }
 
+// Set response header.
 func (res *Response) SetHeader(key string, value string) {
 	res.headerCache[key] = value
 }
 
+// Set response headers.
 func (res *Response) SetHeaders(params ...interface{}) error {
 	keyValues, err := NewKeyValues(params)
 	if err != nil {
@@ -85,14 +92,19 @@ func (res *Response) SetHeaders(params ...interface{}) error {
 	return nil
 }
 
+// Set the status code of response.
 func (res *Response) SetStatusCode(code int) {
 	res.statusCodeCache = code
 }
 
+// Write string data to the response cache.
+// The response won't be send util you call the Flush() method.
 func (res *Response) WriteString(value string) {
 	res.respCache += value
 }
 
+// Write json data to the response cache.
+// The response won't be send util you call the Flush() method.
 func (res *Response) WriteJSON(value interface{}) error {
 	bytes, err := json.Marshal(value)
 	if err == nil {
@@ -102,6 +114,7 @@ func (res *Response) WriteJSON(value interface{}) error {
 	return err
 }
 
+// Flush the response.
 func (res *Response) Flush() error {
 	for k, v := range res.headerCache {
 		res.Header().Set(k, v)

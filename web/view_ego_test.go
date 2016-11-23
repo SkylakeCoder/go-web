@@ -20,7 +20,7 @@ func Test_ViewEGO(test *testing.T) {
 	settings := &AppSettings{
 		ViewDir: "./views_ego",
 	}
-	ego := NewViewEGO(settings)
+	ego := newViewEGO(settings)
 	v, err := ego.Render("test.ego", vp)
 	if err != nil {
 		test.Fatal("Parse error: " + err.Error())
