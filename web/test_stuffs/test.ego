@@ -1,0 +1,12 @@
+<html>
+<head>
+<title><%= title %></title>
+</head>
+
+<body>
+<script src="static/js/test.js"></script>
+<img src="static/img/JC.jpeg"></img>
+<p><%= text %></p>
+<ul><%-partial('listitem.ego', items)%></ul>
+</body>
+</html>
