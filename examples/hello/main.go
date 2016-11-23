@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/SkylakeCoder/go-web/web"
-	"handlers"
+	"./handlers"
 	"log"
 )
 
