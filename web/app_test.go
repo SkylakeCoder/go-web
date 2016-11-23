@@ -3,6 +3,7 @@ package web
 import (
 	"container/list"
 	"fmt"
+	"os"
 	"sync"
 	"testing"
 )
@@ -41,7 +42,6 @@ func (hello *helloHandler) HandleRequest(req *Request, res *Response) {
 	} else {
 		res.WriteString(result)
 	}
-	res.WriteString("key1=" + req.FormValue("key1"))
 	res.Flush()
 }
 
@@ -57,6 +57,10 @@ func (notFound *notFoundHandler) HandleRequest(req *Request, res *Response) {
 }
 
 func Test_App(test *testing.T) {
+	_, err := os.Open("./app_test_enabled")
+	if err != nil {
+		return
+	}
 	app := NewApp()
 	app.SetViewType(VIEW_EGO)
 	app.SetViewDir("./views_ego")
@@ -66,7 +70,7 @@ func Test_App(test *testing.T) {
 	app.Post("/hello", &helloHandler{})
 	app.Get("/user/:username", &userHandler{})
 	app.Get("/404", &notFoundHandler{})
-	err := app.Listen(8688)
+	err = app.Listen(8688)
 	if err != nil {
 		test.Fatal("app.Listen error: ", err)
 	}
