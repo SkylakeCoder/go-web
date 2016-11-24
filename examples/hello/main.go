@@ -16,6 +16,15 @@ func main() {
 	app.Get("/json", &handlers.JSON{})
 	app.Get("/view", &handlers.View{})
 	app.Post("/post_form", &handlers.PostForm{})
+	app.Post("/upload", &handlers.PostUpload{})
+
+	// Usage: curl -X PUT -d "putValue=HelloPut" http://localhost:8688/put_form
+	app.Put("/put_form", &handlers.PutForm{})
+	// Usage: curl -X DELETE http://localhost:8688/delete
+	app.Delete("/delete", &handlers.Delete{})
+	// Usage: curl -X PATCH -d "patchValue=HelloPatch" http://localhost:8688/patch
+	app.Patch("/patch", &handlers.Patch{})
+
 	app.Get("/user/:username", &handlers.UserColon{})
 	app.Get("/count", &handlers.Count{})
 	app.Get("/404", &handlers.Handler404{})

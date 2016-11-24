@@ -10,8 +10,12 @@
 <ul><%-partial('listitem.ego', items)%></ul>
 
 <form action="http://localhost:8688/post_form" method="post">
-    <p>input something: <input type="text" name="inputText"></p>
-    <p><input type="submit" value="submit"></p>
+    <p>input something: <input type="text" name="inputText"><input type="submit" value="submit"></p>
 </form>
+
+<form action="http://localhost:8688/upload" method="post" enctype="multipart/form-data">
+    <p>upload a file by POST method: <input type="file" name="file"><input type="submit" value="submit"></p>
+</form>
+
 </body>
 </html>

@@ -57,6 +57,24 @@ func (app *App) Post(pattern string, handler RequestHandler) error {
 	return err
 }
 
+// Put handles the http request whose request method is "PUT".
+func (app *App) Put(pattern string, handler RequestHandler) error {
+	err := app.handler.addPatternHandler(HTTP_PUT, pattern, handler)
+	return err
+}
+
+// Patch handles the http request whose request method is "PATCH".
+func (app *App) Patch(pattern string, handler RequestHandler) error {
+	err := app.handler.addPatternHandler(HTTP_PATCH, pattern, handler)
+	return err
+}
+
+// Delete handles the http request whose request method is "DELETE".
+func (app *App) Delete(pattern string, handler RequestHandler) error {
+	err := app.handler.addPatternHandler(HTTP_DELETE, pattern, handler)
+	return err
+}
+
 // RegisterPatternHandler registers your own PatternHandler.
 // See pattern.go for more details.
 func (app *App) RegisterPatternHandler(handler PatternHandler) {

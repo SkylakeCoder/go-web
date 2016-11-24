@@ -8,7 +8,7 @@ import (
 type PostForm struct{}
 
 func (pf *PostForm) HandleRequest(req *web.Request, res *web.Response) {
-	resp := fmt.Sprintf("your input is: %s", req.FormValue("inputText"))
+	resp := fmt.Sprintf("your POST input is: %s\n", req.FormValue("inputText"))
 	res.WriteString(resp)
 	res.Flush()
 }
