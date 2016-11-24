@@ -2,10 +2,11 @@ package web
 
 import "os"
 
+// ENUM_VIEW_TYPE is a wrapper type for view-type.
 type ENUM_VIEW_TYPE byte
 
 const (
-	// No need to use view.
+	// VIEW_NULL means there's no need to use view.
 	VIEW_NULL ENUM_VIEW_TYPE = iota
 	// VIEW_EGO is a view template that like the ejs in node.js Express framework.
 	VIEW_EGO

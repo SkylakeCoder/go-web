@@ -7,14 +7,20 @@ import (
 	"net/url"
 )
 
+// HTTPMethod is a wrapper type for http method string.
 type HTTPMethod string
 
 const (
-	HTTP_GET    HTTPMethod = "GET"
-	HTTP_POST   HTTPMethod = "POST"
-	HTTP_PUT    HTTPMethod = "PUT"
+	// HTTP_GET is the "GET" http method
+	HTTP_GET HTTPMethod = "GET"
+	// HTTP_POST is the "POST" http method
+	HTTP_POST HTTPMethod = "POST"
+	// HTTP_PUT is the "PUT" http method
+	HTTP_PUT HTTPMethod = "PUT"
+	// HTTP_DELETE is the "DELETE" http method
 	HTTP_DELETE HTTPMethod = "DELETE"
-	HTTP_PATCH  HTTPMethod = "PATCH"
+	// HTTP_PATCH is the "PATCH" http method
+	HTTP_PATCH HTTPMethod = "PATCH"
 )
 
 // Request object stands for a http request.

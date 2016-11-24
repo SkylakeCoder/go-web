@@ -77,9 +77,8 @@ func (vp *KeyValues) Get(k string) (interface{}, error) {
 	v, ok := (*vp)[k]
 	if ok {
 		return v, nil
-	} else {
-		return v, fmt.Errorf("can't find key: %s", k)
 	}
+	return v, fmt.Errorf("can't find key: %s", k)
 }
 
 // GetAsString gets the value by key and convert the value to the string type,
