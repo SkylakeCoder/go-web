@@ -12,7 +12,7 @@ $ go get github.com/SkylakeCoder/go-web
 
 ## usage
 See more in [examples](https://github.com/SkylakeCoder/go-web/tree/master/examples/hello)
-```
+```go
 package main
 
 import (
