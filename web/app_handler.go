@@ -65,7 +65,8 @@ func (handler *appHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)
 		)
 	} else {
 		for _, patternHandler := range handler.extraPatterns {
-			if patternHandler.HandlePattern(req, res, handler.handlersMap, handler.settings) {
+			success, keepOn := patternHandler.HandlePattern(req, res, handler.handlersMap, handler.settings)
+			if success || !keepOn {
 				return
 			}
 		}

@@ -11,7 +11,7 @@ type patternColon struct {
 }
 
 // HandlePattern handles the special pattern: /xx/:xxx
-func (pc *patternColon) HandlePattern(req *http.Request, res http.ResponseWriter, handlersMap HandlersMap, settings *AppSettings) bool {
+func (pc *patternColon) HandlePattern(req *http.Request, res http.ResponseWriter, handlersMap HandlersMap, settings *AppSettings) (bool, bool) {
 	if pc.colonReg == nil {
 		pc.colonReg = regexp.MustCompile("/:.+")
 	}
@@ -47,8 +47,8 @@ func (pc *patternColon) HandlePattern(req *http.Request, res http.ResponseWriter
 				newRequest(req, params),
 				newResponse(res, settings),
 			)
-			return true
+			return true, false
 		}
 	}
-	return false
+	return false, true
 }
